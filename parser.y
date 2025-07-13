@@ -513,24 +513,25 @@ ExprResult evaluate_expression(ASTNode* expr) {
     
     switch (expr->data.expression.op) {
         case PLUS:
-            if (left.type == VAR_INT && right.type == VAR_INT) {
+            if (left.type == VAR_FLOAT || right.type == VAR_FLOAT) {
+                result.type = VAR_FLOAT;
+                float left_val = (left.type == VAR_FLOAT) ? left.value.fval : (float)left.value.ival;
+                float right_val = (right.type == VAR_FLOAT) ? right.value.fval : (float)right.value.ival;
+                result.value.fval = left_val + right_val;
+            } else {
                 result.type = VAR_INT;
                 result.value.ival = left.value.ival + right.value.ival;
-            } else {
-                result.type = VAR_FLOAT;
-                result.value.fval = (left.type == VAR_INT ? left.value.ival : left.value.fval) + 
-                                   (right.type == VAR_INT ? right.value.ival : right.value.fval);
             }
             break;
-            
         case MINUS:
-            if (left.type == VAR_INT && right.type == VAR_INT) {
+            if (left.type == VAR_FLOAT || right.type == VAR_FLOAT) {
+                result.type = VAR_FLOAT;
+                float left_val = (left.type == VAR_FLOAT) ? left.value.fval : (float)left.value.ival;
+                float right_val = (right.type == VAR_FLOAT) ? right.value.fval : (float)right.value.ival;
+                result.value.fval = left_val - right_val;
+            } else {
                 result.type = VAR_INT;
                 result.value.ival = left.value.ival - right.value.ival;
-            } else {
-                result.type = VAR_FLOAT;
-                result.value.fval = (left.type == VAR_INT ? left.value.ival : left.value.fval) - 
-                                   (right.type == VAR_INT ? right.value.ival : right.value.fval);
             }
             break;
             
